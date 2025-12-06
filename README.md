@@ -5,7 +5,7 @@ El backend está desarrollado con FastAPI y expone una API REST responsable de p
 
 Su funcionamiento se divide en tres etapas principales:
 
-1️⃣ Recepción de imágenes desde el frontend
+## 1️⃣ Recepción de imágenes desde el frontend
 
 El servidor recibe una imagen vía HTTP mediante una petición POST.
 FastAPI la valida, la convierte a un formato procesable y la envía al servicio de predicción.
