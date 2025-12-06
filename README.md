@@ -10,7 +10,7 @@ Su funcionamiento se divide en tres etapas principales:
 El servidor recibe una imagen vía HTTP mediante una petición POST.
 FastAPI la valida, la convierte a un formato procesable y la envía al servicio de predicción.
 
-2️⃣ Inferencia con modelos de Deep Learning
+##2️⃣ Inferencia con modelos de Deep Learning
 
 El backend utiliza dos modelos especializados en TensorFlow/Keras:
 
