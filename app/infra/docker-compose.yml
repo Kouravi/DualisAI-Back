@@ -1,0 +1,15 @@
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: ai-mongodb
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      TZ: "America/Argentina/Buenos_Aires"
+
+volumes:
+  mongo-data:
+    driver: local

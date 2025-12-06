@@ -1,0 +1,10 @@
+data
+get-pip.py
+__pycache__/
+.pytest_cache/
+imagenes_pt
+venv/
+.venv/
+get-pip.py
+app/infra/.venv/
+*.pyc
