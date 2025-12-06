@@ -8,3 +8,4 @@ venv/
 get-pip.py
 app/infra/.venv/
 *.pyc
+readme.txt
