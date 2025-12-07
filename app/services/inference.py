@@ -2,7 +2,7 @@
 
 import numpy as np
 import tensorflow as tf
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image
 from app.neural_network.messages import get_random_message
