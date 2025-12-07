@@ -8,17 +8,28 @@ app = FastAPI(
     version="2.0"
 )
 
+origins = [
+    "http://localhost:3000", 
+    "http://127.0.0.1:3000", 
+    "https://dualis-ai-front.vercel.app"
+    ]
+
 # Middleware CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "*"],  # Cambiar en producción
+    allow_origins=origins, # Cambiar en producción
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Rutas
+
 app.include_router(predict_router, prefix="/api")
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 @app.get("/")
 async def root():

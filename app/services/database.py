@@ -13,11 +13,6 @@ async def insert_prediction(data: dict):
     result = await collection.insert_one(data)
     return str(result.inserted_id)
 
-# async def get_all_predictions():
-#     preds = await collection.find().to_list(1000)
-#     return preds
-
-
 def serialize_doc(doc):
     """Convierte los campos BSON (ObjectId, datetime, etc.) a tipos serializables por JSON"""
     doc["_id"] = str(doc["_id"])
