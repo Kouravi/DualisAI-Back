@@ -1,4 +1,3 @@
-'''
 import os
 import numpy as np
 import tensorflow as tf
@@ -170,5 +169,3 @@ print(f"Accuracy Género: {gender_acc:.2%}")
 # Guardamos modelo final
 model.save(model_path)
 print(f"Modelo guardado en {model_path}")
-
-'''
