@@ -1,24 +1,27 @@
 import os
 import numpy as np
 import tensorflow as tf
-from keras.models import load_model
+from tensorflow.keras.models import load_model  # sigue siendo útil para el humano
 from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image
 from app.neural_network.messages import get_random_message
+from app.neural_network.model_defs import build_dog_cat_model
 
-# Lee rutas desde variables de entorno si existen, si no usa por defecto
 MODEL_HUMANO_PATH = os.getenv(
     "MODEL_HUMANO_PATH",
     "app/neural_network/models/utkface_model_best.keras"
 )
-MODEL_MASCOTA_PATH = os.getenv(
-    "MODEL_MASCOTA_PATH",
-    "app/neural_network/models/dog-cat-mnv2.keras"
+PETS_WEIGHTS_PATH = os.getenv(
+    "MODEL_MASCOTA_WEIGHTS",
+    "app/neural_network/models/dog-cat-mnv2.weights.h5"
 )
 
-# 👇 Carga solo con tf.keras y sin compilar (más seguro para inferencia)
+# Humano: si este también te da guerra, podemos hacer lo mismo de pesos luego
 model_humano = load_model(MODEL_HUMANO_PATH, compile=False)
-model_mascota = load_model(MODEL_MASCOTA_PATH, compile=False)
+
+# Mascota: reconstruye arquitectura y carga SOLO pesos
+model_mascota = build_dog_cat_model(img_size=224)
+model_mascota.load_weights(PETS_WEIGHTS_PATH)
 
 MAX_AGE = int(os.getenv("MAX_AGE", "116"))
 
