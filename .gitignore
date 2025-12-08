@@ -1,4 +1,4 @@
-data
+app/neural_network/data
 get-pip.py
 __pycache__/
 .pytest_cache/

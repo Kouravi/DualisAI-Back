@@ -1,20 +1,26 @@
-# 
-
+import os
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image
 from app.neural_network.messages import get_random_message
 
+# Lee rutas desde variables de entorno si existen, si no usa por defecto
+MODEL_HUMANO_PATH = os.getenv(
+    "MODEL_HUMANO_PATH",
+    "app/neural_network/models/utkface_model_best.keras"
+)
+MODEL_MASCOTA_PATH = os.getenv(
+    "MODEL_MASCOTA_PATH",
+    "app/neural_network/models/dog-cat-mnv2.keras"
+)
 
-MODEL_HUMANO_PATH = "app/neural_network/models/utkface_model_best.keras"
-MODEL_MASCOTA_PATH = "app/neural_network/models/dog-cat-mnv2.keras"
+# 👇 Carga solo con tf.keras y sin compilar (más seguro para inferencia)
+model_humano = load_model(MODEL_HUMANO_PATH, compile=False)
+model_mascota = load_model(MODEL_MASCOTA_PATH, compile=False)
 
-model_humano = load_model(MODEL_HUMANO_PATH)
-model_mascota = load_model(MODEL_MASCOTA_PATH)
-
-MAX_AGE = 116
+MAX_AGE = int(os.getenv("MAX_AGE", "116"))
 
 def preprocess_image(image: Image.Image, size=128):
     """Preprocesamiento genérico"""
@@ -26,6 +32,7 @@ def preprocess_image(image: Image.Image, size=128):
 
 def predict_image(image: Image.Image, tipo_modelo: str):
     """Predice según el tipo de modelo indicado"""
+
     if tipo_modelo == "humano":
         img_pre = preprocess_image(image, size=128)
         age_pred, gender_pred = model_humano.predict(img_pre)
@@ -50,11 +57,11 @@ def predict_image(image: Image.Image, tipo_modelo: str):
         img_pre = preprocess_image(image, size=224)
         pred = model_mascota.predict(img_pre)
 
-        # Tu modelo parece usar una única salida con prob de perro
-        etiqueta = "Observo un Perro 🐶" if pred[0][0] >= 0.5 else "Observo un Gato 🐱"
-        probabilidad = float(pred[0][0]) if etiqueta == "Perro 🐶" else float(1 - pred[0][0])
+        # pred[0][0] ~ 0 → gato, ~1 → perro
+        es_perro = pred[0][0] >= 0.5
+        etiqueta = "Observo un Perro 🐶" if es_perro else "Observo un Gato 🐱"
+        probabilidad = float(pred[0][0]) if es_perro else float(1 - pred[0][0])
 
-        # 👇 Mensaje aleatorio según perro/gato
         mensaje = get_random_message(etiqueta)
 
         return {
@@ -65,7 +72,6 @@ def predict_image(image: Image.Image, tipo_modelo: str):
         }
 
     else:
-        # Por si se pasa un tipo_modelo incorrecto
         return {
             "error": "Tipo de modelo no soportado. Usa 'humano' o 'mascota'."
         }
