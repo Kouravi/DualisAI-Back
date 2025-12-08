@@ -1,3 +1,4 @@
+'''
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
@@ -113,3 +114,4 @@ plt.plot(epocas_total, val_loss, label='Validación')
 plt.legend()
 plt.title('Pérdida')
 plt.show()
+'''
